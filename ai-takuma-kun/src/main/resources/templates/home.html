@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Hello, Spring Boot!</title>
+</head>
+<body>
+<h1>Hello, Spring Boot!</h1>
+
+<form th:action="@{/home}" th:object="${employeeForm}" method="post">
+    <table>
+        <caption>
+            <strong>従業員検索</strong>
+        </caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>EMAIL</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="*{id}"></td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{email}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>Name (optional): <input type="text" th:field="*{name}" />
+       <em th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</em></p>
+    <p><input type="submit" value="Submit" /></p>
+</form>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<context id="MySQLTables" targetRuntime="MyBatis3">
+
+		<!-- ********************************************************************* -->
+		<!-- プラグイン設定 -->
+		<!-- ********************************************************************* -->
+		<!-- Exampleクラスリネームプラグイン -->
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example" />
+			<property name="replaceString" value="Condition" />
+		</plugin>
+		<!-- シリアライザブルプラグイン -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!-- 範囲指定 -->
+		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+		<!-- 文字列化 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 等価判定 -->
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<!-- 疑似PK（複合PKなど用） -->
+		<plugin type="org.mybatis.generator.plugins.VirtualPrimaryKeyPlugin" />
+		<!-- ＠Mapperアノテーションを付与する（SpringBoot用） -->
+		<plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+
+		<!--  -->
+		<plugin type="jp.co.futurenavigator.atk.mybatis.plugin.InsertReturnedIdPlugin" />
+
+		<!-- ********************************************************************* -->
+		<!-- DB接続設定 -->
+		<!-- ********************************************************************* -->
+		<!-- スキーマ情報を取得する DB への接続設定 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/ai_takuma_kun?characterEncoding=UTF-8&amp;serverTimezone=JST"
+			userId="ut_usr" password="ut_usr" />
+
+		<!-- ********************************************************************* -->
+		<!-- DAOクラス／XMLファイル設定 -->
+		<!-- ********************************************************************* -->
+		<!-- SELECT 結果等を格納するドメインモデルを生成する設定 -->
+		<javaModelGenerator targetPackage="jp.co.futurenavigator.atk.dao.model"
+			targetProject="ai-takuma-kun/src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- SQL 設定が記述された XML を生成する設定 -->
+		<sqlMapGenerator targetPackage="jp.co.futurenavigator.atk.dao.mapper"
+			targetProject="ai-takuma-kun/src/main/resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- マッパークラスを生成する設定 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="jp.co.futurenavigator.atk.dao.mapper" targetProject="ai-takuma-kun/src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- ********************************************************************* -->
+		<!-- 生成対象テーブル／ビュー設定 -->
+		<!-- ********************************************************************* -->
+		<!-- コードを生成するテーブルを指定 -->
+		<table schema="ai_takuma_kun" tableName="tt_chat">
+			<property name="useActualColumnNames" value="false" />
+			 <property name="virtualKeyColumns" value="CHAT_ID TALKER_ID"/>
+		</table>
+
+	</context>
+</generatorConfiguration>
