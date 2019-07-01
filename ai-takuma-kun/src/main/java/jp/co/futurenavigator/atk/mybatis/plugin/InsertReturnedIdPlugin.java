@@ -142,7 +142,7 @@ public class InsertReturnedIdPlugin extends PluginAdapter {
 			selectKeyElement.addAttribute(new Attribute("resultType", "java.lang.Long"));
 			selectKeyElement.addAttribute(new Attribute("keyProperty", autoIncrementColumnName));
 			selectKeyElement.addAttribute(new Attribute("order", "AFTER"));
-			selectKeyElement.addElement(new TextElement("select @@IDENTITY"));
+			selectKeyElement.addElement(new TextElement("select last_insert_id()"));
 			newElement.addElement(selectKeyElement);
 
 			// save the new element locally.   We'll add it to the document

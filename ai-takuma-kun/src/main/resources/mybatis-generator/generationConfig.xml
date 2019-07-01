@@ -62,9 +62,14 @@
 		<!-- 生成対象テーブル／ビュー設定 -->
 		<!-- ********************************************************************* -->
 		<!-- コードを生成するテーブルを指定 -->
+		<!-- チャット履歴 -->
 		<table schema="ai_takuma_kun" tableName="tt_chat">
 			<property name="useActualColumnNames" value="false" />
-			 <property name="virtualKeyColumns" value="CHAT_ID TALKER_ID"/>
+			 <property name="virtualKeyColumns" value="CHAT_ID CHATTER_ID"/>
+		</table>
+		<!-- 話者 -->
+		<table schema="ai_takuma_kun" tableName="tt_chatter">
+			<property name="useActualColumnNames" value="false" />
 		</table>
 
 	</context>

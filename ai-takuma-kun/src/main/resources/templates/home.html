@@ -5,32 +5,55 @@
 <title>Hello, Spring Boot!</title>
 </head>
 <body>
-<h1>Hello, Spring Boot!</h1>
+	<h1>AIたくま君（仮）</h1>
 
-<form th:action="@{/home}" th:object="${employeeForm}" method="post">
-    <table>
-        <caption>
-            <strong>従業員検索</strong>
-        </caption>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>EMAIL</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="*{id}"></td>
-                <td th:text="*{name}"></td>
-                <td th:text="*{email}"></td>
-            </tr>
-        </tbody>
-    </table>
+	<form th:action="@{/home}" th:object="${homeDto}" method="post">
+		<table>
+			<caption>
+				<strong>従業員検索</strong>
+			</caption>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>NAME</th>
+					<th>EMAIL</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>あなた：</th>
+					<td>
+						<input type="text" th:field="*{yourName}" />
+						<em th:if="${#fields.hasErrors('yourName')}" th:errors="*{yourName}">Name Error</em>
+					</td>
+				</tr>
+				<tr>
+					<th>入力：</th>
+					<td>
+						<textarea th:field="*{inputTxt}"></textarea>
+						<em th:if="${#fields.hasErrors('inputTxt')}" th:errors="*{inputTxt}">Name Error</em>
+					</td>
+				</tr>
+				<tr>
+					<th>ボット：</th>
+					<td>
+						<input type="text" th:field="*{botName}" />
+						<em th:if="${#fields.hasErrors('botName')}" th:errors="*{botName}">Name Error</em>
+					</td>
+				</tr>
+				<tr>
+					<th>出力：</th>
+					<td>
+						<textarea readonly th:field="*{outputTxt}"></textarea>
+						<em th:if="${#fields.hasErrors('outputTxt')}" th:errors="*{outputTxt}">Name Error</em>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-    <p>Name (optional): <input type="text" th:field="*{name}" />
-       <em th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</em></p>
-    <p><input type="submit" value="Submit" /></p>
-</form>
+		<p>
+			<input type="submit" value="送信" />
+		</p>
+	</form>
 </body>
 </html>

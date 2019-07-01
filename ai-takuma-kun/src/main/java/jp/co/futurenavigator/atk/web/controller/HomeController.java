@@ -2,12 +2,12 @@ package jp.co.futurenavigator.atk.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.futurenavigator.atk.biz.service.HomeService;
-import jp.co.futurenavigator.atk.dao.model.TtChat;
-import jp.co.futurenavigator.atk.web.form.EmployeeForm;
+import jp.co.futurenavigator.atk.web.dto.HomeDto;
 
 @Controller
 public class HomeController {
@@ -20,18 +20,21 @@ public class HomeController {
 	 * @return
 	 */
 	@RequestMapping("/home")
-	public ModelAndView index(ModelAndView mv) {
-		EmployeeForm form = new EmployeeForm();
-		form.setId("1");
-		form.setName("Ken");
-		form.setEmail("ken@mail.coml");
+	public ModelAndView index(ModelAndView mv, @ModelAttribute HomeDto dto) {
 
-		TtChat record = new TtChat();
-		record.setTalkerId(0L);
-		record.setChatText("");
-		record = homeService.saveKpterDetailPos(record);
+		if(dto == null) {
+			dto = new HomeDto();
 
-		mv.addObject("employeeForm", form);
+			dto.setYourName("一見さん");
+			dto.setInputTxt("");
+			dto.setBotName("たくまくん");
+			dto.setInputTxt("");
+		}
+
+
+		dto = homeService.saveChat(dto);
+
+		mv.addObject("homeDto", dto);
 		mv.setViewName("home");
 		System.out.println("test");
 
