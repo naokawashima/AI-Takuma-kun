@@ -1,21 +1,16 @@
 package jp.co.futurenavigator.atk.biz.service;
 
-import java.util.List;
-import java.util.Random;
-
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import jp.co.futurenavigator.atk.dao.mapper.TtChatMapper;
 import jp.co.futurenavigator.atk.dao.mapper.TtChatterMapper;
-import jp.co.futurenavigator.atk.dao.model.TtChat;
-import jp.co.futurenavigator.atk.dao.model.TtChatCondition;
-import jp.co.futurenavigator.atk.dao.model.TtChatter;
-import jp.co.futurenavigator.atk.dao.model.TtChatterCondition;
 import jp.co.futurenavigator.atk.web.dto.HomeDto;
+import jp.co.futurenavigator.atk.web.dto.HubInDto;
+import jp.co.futurenavigator.atk.web.dto.HubOutDto;
 
 @Component
 public class HomeService {
@@ -26,92 +21,41 @@ public class HomeService {
 	/** 話者 */
 	@Autowired
 	private TtChatterMapper ttChatterMapper;
+
 	/** チャット履歴  */
 	@Autowired
 	private TtChatMapper ttChatMapper;
 
+	/** REST通信呼び出し用Bean設定 */
+	@Autowired
+	@Qualifier("aiTtakumaKunHubApiRestTemplate")
+	private RestTemplate restTemplate;
+
+	/** 郵便番号検索API リクエストURL */
+	private static final String URL = "http://localhost:8080/hub";
+
+	/**
+	 *
+	 * @param dto
+	 * @return
+	 */
 	@Transactional(readOnly = true)
 	public HomeDto saveChat(HomeDto dto) {
 
-		if(StringUtils.isEmpty(dto.getYourName()) || StringUtils.isEmpty(dto.getBotName()) ) {
-			dto.setInputTxt("");
-			dto.setOutputTxt("");
+		HubInDto inDto = new HubInDto();
+		inDto.setYourName(dto.getYourName());
+		inDto.setInputTxt(dto.getInputTxt());
+		inDto.setBotName(dto.getBotName());
+		inDto.setOutputTxt(dto.getOutputTxt());
 
-			return dto;
-		}
+		HubOutDto outDto = restTemplate.postForObject(URL, inDto, HubOutDto.class);
 
-		//話者情報取得（あなた）
-		TtChatterCondition youChatterCond = new TtChatterCondition();
-		youChatterCond.createCriteria().andChatterNameLike(dto.getYourName());
-		List<TtChatter> youList = ttChatterMapper.selectByExample(youChatterCond);
-		TtChatter you = new TtChatter();
-		if(		CollectionUtils.isNotEmpty(youList)) {
-			you = youList.get(0);
-		}else {
-			//新規話者の場合、登録
-			you.setChatterName(dto.getYourName());
-			int chatterId = 	ttChatterMapper.insertSelectiveReturnedId(you);
-			you.setChatterId(Long.valueOf(chatterId));
-		}
-
-		//話者情報取得（ボット）
-		TtChatterCondition botChatterCond = new TtChatterCondition();
-		botChatterCond.createCriteria().andChatterNameLike(dto.getBotName());
-		List<TtChatter> botList = ttChatterMapper.selectByExample(botChatterCond);
-		TtChatter bot = new TtChatter();
-		if(		CollectionUtils.isNotEmpty(botList)) {
-			bot = botList.get(0);
-		}else {
-			//新規話者の場合、登録
-			bot.setChatterName(dto.getYourName());
-			int chatterId = 	ttChatterMapper.insertSelectiveReturnedId(bot);
-			bot.setChatterId(Long.valueOf(chatterId));
-		}
-
-		//チャット履歴登録
-		TtChat chat = new TtChat();
-		chat.setChatText(dto.getInputTxt());
-		chat.setChatterId(you.getChatterId());
-
-		int chatId  = ttChatMapper.insertSelectiveReturnedId(chat);
-		chat.setChatId(Long.valueOf(chatId));
-
-
-//		応答作成
-		TtChatCondition chatCond = new TtChatCondition();
-		chatCond.createCriteria().andChatTextLike("%"+dto.getInputTxt()+"%");
-		List<TtChat> chatList = ttChatMapper.selectByExample(chatCond);
-		if(CollectionUtils.isNotEmpty(chatList) && chatList.size() > 1) {
-			//複数取れたレコードの中から適当にチャット履歴のPK取得
-			Long keyChatId = chatList.get(new  Random().nextInt(chatList.size()-1)).getChatId();
-
-
-			//応答の候補を適当に取得
-			TtChatCondition  respChatCond= new TtChatCondition();
-
-			respChatCond.createCriteria().andChatIdBetween(keyChatId+1, keyChatId+9);
-			List<TtChat> respChatList = ttChatMapper.selectByExample(respChatCond);
-			if(CollectionUtils.isNotEmpty(respChatList)) {
-				//複数取れたレコードの中から適当にチャット履歴.文章を応答に設定
-				dto.setOutputTxt(respChatList.get(new  Random().nextInt(respChatList.size())).getChatText());
-
-				//応答をチャット履歴に登録
-				TtChat respChat = new TtChat();
-				respChat.setChatText(dto.getOutputTxt());
-				respChat.setChatterId(Long.valueOf(bot.getChatterId()));
-
-				ttChatMapper.insertSelectiveReturnedId(respChat);
-			}else {
-				dto.setOutputTxt("");
-
-			}
-		}else {
-			dto.setOutputTxt("");
-		}
-
-
-		dto.setInputTxt("");
+		dto.setYourName(outDto.getYourName());
+		dto.setInputTxt(outDto.getInputTxt());
+		dto.setBotName(outDto.getBotName());
+		dto.setOutputTxt(outDto.getOutputTxt());
 
 		return dto;
 	}
+
 }
