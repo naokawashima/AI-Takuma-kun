@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<html
+ xmlns:th="http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layout/base-layout}">
+
+<head>
+<title>alife front</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="description" content="this page is fron page of artificial life project ">
+<script th:src="@{/static/js/frontWeb.js}"></script>
+<script src="/js/frontWeb.js" th:src="@{/js/frontWeb.js}"></script>
+</head>
+<body>
+	<!--/* ヘッダフラグメント */-->
+	<div layout:fragment="header">alife</div>
+
+	<!--/* コンテンツ部分 */-->
+	<div layout:fragment="contents" class="container-fluid">
+		<h1>対話モード</h1>
+		<form th:action="@{/frontWeb}" th:object="${frontWebForm}" method="post">
+
+			<div class="w-100 d-flex flex-row">
+				<div class="w-25 align-middle">あなた：</div>
+				<div class="w-75">
+					<input type="text" th:field="*{yourName}"  class="w-75"/>
+					<em th:if="${#fields.hasErrors('yourName')}" th:errors="*{yourName}">Name Error</em>
+				</div>
+			</div>
+
+			<div class="w-100 d-flex flex-row">
+				<div class="w-25 align-middle">入力：</div>
+				<div class="w-75">
+					<input type="text" th:field="*{inputTxt}" class="w-75"/>
+					<em th:if="${#fields.hasErrors('inputTxt')}" th:errors="*{inputTxt}">Name Error</em>
+				</div>
+			</div>
+
+			<div class="w-100 d-flex flex-row">
+				<div class="w-25 align-middle">ボット：</div>
+				<div class="w-75">
+					<input type="text" th:field="*{botName}"  class="w-75"/>
+					<em th:if="${#fields.hasErrors('botName')}" th:errors="*{botName}">Name Error</em>
+				</div>
+			</div>
+
+			<div class="w-100 d-flex flex-row">
+				<div class="w-25 align-middle">出力：</div>
+				<div class="w-75">
+					<textarea readonly th:field="*{outputTxt}"  class="w-75"></textarea>
+					<em th:if="${#fields.hasErrors('outputTxt')}" th:errors="*{outputTxt}">Name Error</em>
+				</div>
+			</div>
+
+			<div class="w-100">
+				<button type="submit" class="btn btn-primary btn-block">送信</button>
+			</div>
+
+		</form>
+	</div>
+</body>
+</html>
+
+
+</html>

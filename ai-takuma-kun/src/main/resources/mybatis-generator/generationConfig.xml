@@ -26,35 +26,35 @@
 		<plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
 
 		<!--  -->
-		<plugin type="jp.co.futurenavigator.atk.mybatis.plugin.InsertReturnedIdPlugin" />
+		<plugin type="jp.co.futurenavigator.ptk.fw.mybatis.plugin.InsertReturnedIdPlugin" />
 
 		<!-- ********************************************************************* -->
 		<!-- DB接続設定 -->
 		<!-- ********************************************************************* -->
 		<!-- スキーマ情報を取得する DB への接続設定 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost:3306/ai_takuma_kun?characterEncoding=UTF-8&amp;serverTimezone=JST"
+			connectionURL="jdbc:mysql://localhost:3306/pa_takuma_kun?characterEncoding=UTF-8&amp;serverTimezone=JST"
 			userId="ut_usr" password="ut_usr" />
 
 		<!-- ********************************************************************* -->
 		<!-- DAOクラス／XMLファイル設定 -->
 		<!-- ********************************************************************* -->
 		<!-- SELECT 結果等を格納するドメインモデルを生成する設定 -->
-		<javaModelGenerator targetPackage="jp.co.futurenavigator.atk.dao.model"
-			targetProject="ai-takuma-kun/src/main/java">
+		<javaModelGenerator targetPackage="jp.co.futurenavigator.ptk.dao.model"
+			targetProject="alife/src/main/java">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 
 		<!-- SQL 設定が記述された XML を生成する設定 -->
-		<sqlMapGenerator targetPackage="jp.co.futurenavigator.atk.dao.mapper"
-			targetProject="ai-takuma-kun/src/main/resources">
+		<sqlMapGenerator targetPackage="jp.co.futurenavigator.ptk.dao.mapper"
+			targetProject="alife/src/main/resources">
 			<property name="enableSubPackages" value="true" />
 		</sqlMapGenerator>
 
 		<!-- マッパークラスを生成する設定 -->
 		<javaClientGenerator type="XMLMAPPER"
-			targetPackage="jp.co.futurenavigator.atk.dao.mapper" targetProject="ai-takuma-kun/src/main/java">
+			targetPackage="jp.co.futurenavigator.ptk.dao.mapper" targetProject="alife/src/main/java">
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 
@@ -63,12 +63,12 @@
 		<!-- ********************************************************************* -->
 		<!-- コードを生成するテーブルを指定 -->
 		<!-- チャット履歴 -->
-		<table schema="ai_takuma_kun" tableName="tt_chat">
+		<table schema="pa_takuma_kun" tableName="tt_chat">
 			<property name="useActualColumnNames" value="false" />
 			 <property name="virtualKeyColumns" value="CHAT_ID CHATTER_ID"/>
 		</table>
 		<!-- 話者 -->
-		<table schema="ai_takuma_kun" tableName="tt_chatter">
+		<table schema="pa_takuma_kun" tableName="tt_chatter">
 			<property name="useActualColumnNames" value="false" />
 		</table>
 
