@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AlifeApplication {
+public class Application {
 
 	/**
 	 * アプリケーションの起点となるMainクラス.
@@ -13,7 +13,7 @@ public class AlifeApplication {
 	 *
 	 */
 	public static void main(String[] args) {
-		SpringApplication.run(AlifeApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }
